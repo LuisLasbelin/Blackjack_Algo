@@ -11,6 +11,7 @@ public class Deck : MonoBehaviour
     public Button playAgainButton;
     public Text finalMessage;
     public Text probMessage;
+    public int iterations;
 
     public int[] values = new int[52];
     int cardIndex = 0;    
@@ -34,6 +35,20 @@ public class Deck : MonoBehaviour
          * En principio, la posición de cada valor se deberá corresponder con la posición de faces. 
          * Por ejemplo, si en faces[1] hay un 2 de corazones, en values[1] debería haber un 2.
          */
+        int cartasPalo = 0;
+        int palo = 100;
+        for (int i = 0; i < values.Length; i++)
+        {
+            // las centenas son el palo y el resto es el valor de la carta
+            values[i] = palo + cartasPalo;
+            cartasPalo++;
+            // Cuando se han hecho todas las cartas de un palo, se vuelve a contar con el siguiente palo
+            if(cartasPalo > 12)
+            {
+                cartasPalo = 0;
+                palo += 100;
+            }
+        }
     }
 
     private void ShuffleCards()
@@ -42,7 +57,25 @@ public class Deck : MonoBehaviour
          * Barajar las cartas aleatoriamente.
          * El método Random.Range(0,n), devuelve un valor entre 0 y n-1
          * Si lo necesitas, puedes definir nuevos arrays.
-         */       
+         */
+        for (int i = 0; i < iterations; i++)
+        {
+            // Elegimos dos cartas al azar del mazo
+            int index = Random.Range(0, 52);
+            int indexAlt = Random.Range(0, 52);
+            // Siempre que no sean la misma carta, las intercambiamos
+            if(index != indexAlt)
+            {
+                // Cambiamos dos cartas de posicion en faces
+                Sprite auxSprite = faces[index];
+                faces[index] = faces[indexAlt];
+                faces[indexAlt] = auxSprite;
+                // Cambiamos sus valores de posicion
+                int auxInt = values[index];
+                values[index] = values[indexAlt];
+                values[indexAlt] = auxInt;
+            }
+        }
     }
 
     void StartGame()
