@@ -35,18 +35,15 @@ public class Deck : MonoBehaviour
          * En principio, la posición de cada valor se deberá corresponder con la posición de faces. 
          * Por ejemplo, si en faces[1] hay un 2 de corazones, en values[1] debería haber un 2.
          */
-        int cartasPalo = 0;
-        int palo = 100;
+        int cartasPalo = 1;
         for (int i = 0; i < values.Length; i++)
         {
-            // las centenas son el palo y el resto es el valor de la carta
-            values[i] = palo + cartasPalo;
+            values[i] = cartasPalo;
             cartasPalo++;
-            // Cuando se han hecho todas las cartas de un palo, se vuelve a contar con el siguiente palo
-            if(cartasPalo > 12)
+            // Cuando se han hecho todas las cartas de un palo, hay 12 cartas por palo con valores del 1 al 13
+            if(cartasPalo == 14)
             {
-                cartasPalo = 0;
-                palo += 100;
+                cartasPalo = 1;
             }
         }
     }
@@ -87,6 +84,14 @@ public class Deck : MonoBehaviour
             /*TODO:
              * Si alguno de los dos obtiene Blackjack, termina el juego y mostramos mensaje
              */
+            if(player.GetComponent<CardHand>().points == 21)
+            {
+                finalMessage.text = "Player Wins!";
+            }
+            if (dealer.GetComponent<CardHand>().points == 21)
+            {
+                finalMessage.text = "House Wins!";
+            }
         }
     }
 
